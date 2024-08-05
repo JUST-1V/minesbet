@@ -18,6 +18,7 @@
         }
 
         .container {
+            height: 37em;
             text-align: center;
             background-color: #2d2d44;
             border-radius: 10px;
@@ -47,11 +48,8 @@
             font-size: 24px;
             cursor: pointer;
             border-radius: 5px;
-            transition: background-color 0.3s, transform 0.2s;
-        }
-
-        .tile:hover {
-            transform: scale(1.1);
+            transition: transform 0.6s, background-color 0.3s;
+            transform-style: preserve-3d;
         }
 
         .tile.revealed {
@@ -60,12 +58,38 @@
             cursor: default;
         }
 
+        .tile.flip {
+            transform: rotateY(180deg);
+        }
+
+        .tile-content {
+            backface-visibility: hidden;
+            position: absolute;
+        }
+
+        .tile-back {
+            transform: rotateY(180deg);
+        }
+ #points{
+    margin-top: 2em;
+ }
         #points, #score {
             margin-top: 10px;
             font-size: 18px;
         }
 
         #bet-input {
+            margin-top:8em;
+            padding: 10px;
+            font-size: 16px;
+            width: 100px;
+            text-align: center;
+            border-radius: 5px;
+            border: none;
+            background-color: #3a3a55;
+            color: #ffffff;
+        }
+        #betZ-input {
             margin-top: 20px;
             padding: 10px;
             font-size: 16px;
@@ -76,13 +100,17 @@
             background-color: #3a3a55;
             color: #ffffff;
         }
-
+        #start-btn{
+            display: block;
+            transform: translate(7em, 0em);
+        }
         #start-btn, #restart-btn, #stop-btn {
             margin-top: 20px;
             padding: 10px 20px;
             font-size: 16px;
             cursor: pointer;
             border: none;
+            
             border-radius: 5px;
             background-color: #28a745;
             color: white;
@@ -116,38 +144,228 @@
         .tips p {
             margin: 5px 0;
         }
+
+        /* dialog */
+        button {
+  font: inherit;
+}
+.btn {
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  padding: 0.75em 1.5em;
+  transition: background-color 150ms linear;
+  position: relative;
+  top: 6em;
+  border-radius: 10%;
+  animation:  glow 2s   infinite ;
+  border: none;
+  outline: none;
+}
+
+.btn:is(:focus, :hover) {
+  cursor: pointer;
+  background-color: hsl(228, 25%, 84%);
+}
+button[name="button-1"] {
+  background-color: #32e75c;
+}
+@keyframes glow {
+    0% {
+        background-color: #ffffff;
+    }
+    
+    50% {
+        background-color: #e74d32;
+    }
+    100%{
+        background-color: #ffffff;
+    }
+    
+}
+/**************************
+   CSS for the Dialog Box
+/**************************/
+.dialog {
+  position: fixed;
+  color: black;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%; /* center */
+  width: 300px;
+  max-width: 80%;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+  pointer-events: none;
+  opacity: 0;
+  scale: 0;
+  transition: scale 0.3s ease-in-out, opacity 0.15s linear;
+  z-index: 99;
+  box-shadow: 0px 0px 1000px 1000px #ffffff7d;
+}
+
+.dialog.open {
+  pointer-events: auto;
+  opacity: 1;
+  scale: 1;
+}
+
+.dialog > * {
+  /* header, body and footer */
+  padding: 10px;
+}
+
+.dialog-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dialog-title {
+  font-weight: 700;
+}
+
+.dialog-close {
+  background-color: white;
+  font-size: 20px;
+  padding-bottom: 0;
+  transition: background-color 0.2s linear;
+}
+
+.dialog-close:is(:focus, :hover) {
+  background-color: #d4e7fa;
+}
+
+.dialog-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dialog-button {
+  background-color: dodgerblue;
+  color: rgb(0, 0, 0);
+  padding: 0.4em 1.4em;
+  transition: background-color 0.2s linear;
+}
+
+.dialog-button:is(:focus, :hover) {
+  background-color: #166cbf;
+}
+
+.dialog-close,
+.dialog-button {
+  border: none;
+  cursor: pointer;
+}
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Minesweeper Game</h1>
+        <h1>MINNETS GAME</h1>
         <div id="points">Points: 100</div>
         <div id="score">Score: 0</div>
         <input type="number" id="bet-input" placeholder="Bet points" min="10" max="100">
+        <input type="number" id="betZ-input" placeholder="No. of Mines">
         <button id="start-btn">Start Game</button>
         <div id="game-board"></div>
         <button id="stop-btn">Stop and Save</button>
         <button id="restart-btn">Restart Game</button>
     </div>
-    <div class="tips">
-        <h2>Betting Tips:</h2>
-        <p><strong>Bet between 10 to 49:</strong></p>
-        <p>Form: 50 points</p>
-        <p>Money: 10 points</p>
+    <button type="button" class="btn" name="button-1">Help ?</button>
+    <section style="text-align: center;">Made by Void
         <br>
-        <p><strong>Bet between 50 to 80:</strong></p>
-        <p>Form: 100 points</p>
-        <p>Money: 50 points</p>
-        <br>
-        <p><strong>Bet between 81 to 100:</strong></p>
-        <p>Form: 180 points</p>
-        <p>Money: 120 points</p>
-    </div>
-<section>Made by Void</section>
+        v2.0
+    </section>
     <script>
+    
+     //dialog box 
+     // 2023-08-27 By Joao Rodrigues
+class Dialog {
+  // Declare static properties to store the dialog elements
+  static dialog = null;
+  static dialogBody = null;
+  static closeButton = null;
+  static button = null;
+
+  constructor(dialogId) {
+    // Check if the dialog element already exists, if not, create it
+    if (!Dialog.dialog) {
+      Dialog.dialog = this.#createHTMLDialogBox(dialogId);
+    }
+    Dialog.dialogBody = Dialog.dialog.querySelector(".dialog-body");
+    Dialog.closeButton = Dialog.dialog.querySelector(".dialog-close");
+    Dialog.button = Dialog.dialog.querySelector(".dialog-button");
+
+    // Bind the close method to the current instance
+    this.close = this.close.bind(this);
+
+    // Add an event listener for the two buttons.
+    Dialog.closeButton.addEventListener("click", this.close);
+    Dialog.button.addEventListener("click", this.close);
+  }
+
+  set visible(value) {
+    Dialog.dialog.classList.toggle("open", value);
+  }
+
+  show(message) {
+    Dialog.dialogBody.textContent = message;
+    document.addEventListener("keydown", this.close);
+    // Use requestAnimationFrame to force transitions to run at the first time.
+    requestAnimationFrame(() => {
+      this.visible = true;
+    });
+  }
+
+  close(event) {
+    // Check if the ESC key was pressed or the button was clicked
+    if (event?.key === "Escape" || event?.type === "click") {
+      this.visible = false;
+      document.removeEventListener("keydown", this.close);
+    }
+  }
+
+  // Declare a private method to create a HTML dialog element and append it to the document
+  #createHTMLDialogBox() {
+    const dialog = document.createElement("div");
+    dialog.setAttribute("role", "dialog");
+    dialog.setAttribute("aria-labelledby", "jsdialog-title");
+    dialog.setAttribute("aria-describedby", "jsdialog-body");
+    dialog.classList.add("dialog");
+    dialog.id = "jsdialog";
+    dialog.innerHTML = `
+      <div class="dialog-header">
+        <span class="dialog-title" id="jsdialog-title">Alert</span>
+        <button type="button" class="dialog-close" aria-label="Close">&times;</button>
+      </div>
+      <div class="dialog-body" id="jsdialog-body">
+        This is an alert message.
+      </div>
+      <div class="dialog-footer">
+        <button type="button" class="dialog-button">OK</button>
+      </div>`;
+    return document.body.appendChild(dialog);
+  }
+}
+
+/**
+ * Click event handler for the button.btn.
+ * It creates a new instance of the Dialog class and
+ * calls the show method with a message argument.
+ */
+const buttons = document.querySelectorAll(".btn");
+buttons.forEach((button) => {
+  button.addEventListener("click", () => {
+    new Dialog()
+      .show(`-Bet between 10 to 49: \n Form: 50 points \nMoney: 10 points \n-Bet between 50 to 80: \nForm: 100 points \nMoney: 50 points \n-Bet between 81 to 100: \nForm: 180 points \nMoney: 120 points`);
+  });
+});
+//---------------------------------------
+
         const boardSize = 5;
         const totalTiles = boardSize * boardSize;
-        const bombCount = 5;
+        let bombCount 
         const formCount = 3;
 
         let score = 0;
@@ -163,7 +381,7 @@
                 alert('Not enough points to play. Game Over!');
                 return;
             }
-
+            bombCount =document.getElementById('betZ-input').value
             points -= betAmount;
             document.getElementById('points').innerText = `Points: ${points}`;
             score = 0;
@@ -176,6 +394,7 @@
             document.getElementById('restart-btn').style.display = 'none';
             document.getElementById('stop-btn').style.display = 'block';
             document.getElementById('bet-input').style.display = 'none';
+            document.getElementById('betZ-input').style.display = 'none';
             document.getElementById('start-btn').style.display = 'none';
 
             adjustRewardsBasedOnBet();
@@ -225,6 +444,16 @@
             board.forEach((tile, index) => {
                 const tileElement = document.createElement('div');
                 tileElement.classList.add('tile');
+                
+                const front = document.createElement('div');
+                front.classList.add('tile-content');
+                
+                const back = document.createElement('div');
+                back.classList.add('tile-content', 'tile-back');
+                
+                tileElement.appendChild(front);
+                tileElement.appendChild(back);
+
                 tileElement.addEventListener('click', () => revealTile(index));
                 gameBoard.appendChild(tileElement);
             });
@@ -234,58 +463,87 @@
             if (gameOver || board[index] === 'revealed') return;
 
             const tileElement = document.getElementsByClassName('tile')[index];
+            tileElement.classList.add('flip');
+
+            const tileBack = tileElement.querySelector('.tile-back');
 
             if (board[index] === 'bomb') {
-                tileElement.innerText = '💣';
-                tileElement.style.backgroundColor = '#ff4d4d';
+                tileBack.innerText = '💣';
+                
                 gameOver = true;
+                revealAllTiles();
                 alert('Game Over! You hit a bomb.');
                 document.getElementById('restart-btn').style.display = 'block';
                 document.getElementById('stop-btn').style.display = 'none';
             } else if (board[index] === 'form') {
-                tileElement.innerText = '📄';
+                tileBack.innerText = '📄';
+                
                 score += formPoints;
-                tileElement.style.backgroundColor = '#28a745';
             } else {
-                tileElement.innerText = '💰';
+                tileBack.innerText = '💰';
+                
                 score += moneyPoints;
-                tileElement.style.backgroundColor = '#ffc107';
             }
 
-            tileElement.classList.add('revealed');
-            document.getElementById('score').innerText = `Score: ${score}`;
             board[index] = 'revealed';
+            document.getElementById('score').innerText = `Score: ${score}`;
         }
 
-        function stopAndSave() {
-            points += score;
+        function revealAllTiles() {
+            board.forEach((tile, index) => {
+                const tileElement = document.getElementsByClassName('tile')[index];
+                tileElement.classList.add('flip');
+                
+                const tileBack = tileElement.querySelector('.tile-back');
+
+                if (tile === 'bomb') {
+                    tileBack.innerText = '💣';
+                    
+                } else if (tile === 'form') {
+                    tileBack.innerText = '📄';
+                    
+                } else if (tile === null) {
+                    tileBack.innerText = '💰';
+                    
+                }
+            });
+        }
+
+        function resetGame() {
+            document.getElementById('game-board').innerHTML = '';
+            board = [];
+            score = 0;
+            gameOver = false;
             document.getElementById('points').innerText = `Points: ${points}`;
-            alert(`You stopped the game with a score of ${score} and earned ${score} points!`);
-            document.getElementById('restart-btn').style.display = 'block';
-            document.getElementById('stop-btn').style.display = 'none';
-            gameOver = true;
-        }
-
-        function startGame() {
-            betAmount = parseInt(document.getElementById('bet-input').value);
-            if (betAmount < 10 || betAmount > 100 || isNaN(betAmount)) {
-                alert('Please enter a valid bet between 10 and 100.');
-            } else {
-                initGame();
-            }
-        }
-
-        function restartGame() {
-            document.getElementById('bet-input').style.display = 'block';
+            document.getElementById('score').innerText = `Score: ${score}`;
+            document.getElementById('bet-input').style.display = 'inline-block';
+            document.getElementById('betZ-input').style.display = 'inline';
             document.getElementById('start-btn').style.display = 'block';
             document.getElementById('restart-btn').style.display = 'none';
             document.getElementById('stop-btn').style.display = 'none';
-            document.getElementById('game-board').innerHTML = '';
         }
 
-        document.getElementById('start-btn').addEventListener('click', startGame);
-        document.getElementById('restart-btn').addEventListener('click', restartGame);
-        document.getElementById('stop-btn').addEventListener('click', stopAndSave);
+        document.getElementById('start-btn').addEventListener('click', () => {
+            betAmount = parseInt(document.getElementById('bet-input').value);
+            bombCount = parseInt(document.getElementById('betZ-input').value);
+            if (betAmount >= 10 && betAmount <= 100 && bombCount >=1 && bombCount <=10) {
+                initGame();
+            } else {
+                alert('Please enter a valid bet amount between 10 and 100. and no.of mines between 1 to 10');
+            }
+        });
+
+        document.getElementById('stop-btn').addEventListener('click', () => {
+            gameOver = true;
+            revealAllTiles();
+            points += score;
+            document.getElementById('points').innerText = `Points: ${points}`;
+            alert('Game Stopped! Your score has been saved.');
+            document.getElementById('restart-btn').style.display = 'block';
+            document.getElementById('stop-btn').style.display = 'none';
+        });
+
+        document.getElementById('restart-btn').addEventListener('click', resetGame);
     </script>
 </body>
 </html>
